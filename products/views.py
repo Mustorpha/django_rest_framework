@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Product
 from .serializers import ProductSerializer
+from api.mixins import ProductEditorPermissionMixin
 
 class ProductDetailApiView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
@@ -14,7 +15,7 @@ class ProductDetailApiView(generics.RetrieveAPIView):
 
 ProductDetail = ProductDetailApiView.as_view()
 
-class ProductListCreateApiView(generics.ListCreateAPIView):
+class ProductListCreateApiView(ProductEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -31,6 +32,7 @@ class ProductUpdateApiView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
+    permission_classes = [permissions.DjangoModelPermissions]
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -42,6 +44,7 @@ ProductUpdate = ProductUpdateApiView.as_view()
 class ProductDestroyApiView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [permissions.DjangoModelPermissions]
 
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
@@ -58,6 +61,7 @@ ProductDelete = ProductDestroyApiView.as_view()
 # ProductList = ProductListApiView.as_view()
 
 class ProductMixinView(
+    ProductEditorPermissionMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin, 
