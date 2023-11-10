@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from .models import Product
 from .serializers import ProductSerializer
-from api.mixins import ProductEditorPermissionMixin
+from api.mixins import ProductEditorPermissionMixin, UserQuerySetMixin
 
 class ProductDetailApiView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
@@ -15,16 +15,30 @@ class ProductDetailApiView(generics.RetrieveAPIView):
 
 ProductDetail = ProductDetailApiView.as_view()
 
-class ProductListCreateApiView(ProductEditorPermissionMixin, generics.ListCreateAPIView):
+class ProductListCreateApiView(
+    UserQuerySetMixin,
+    ProductEditorPermissionMixin,
+    generics.ListCreateAPIView
+    ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
     def perform_create(self, serializer):
         title = serializer.validated_data.get('title')
+        # email = serializer.validated_date.pop('email')
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
+    
+    #def get_queryset(self, *args, **kwargs):
+    #    qs = super().get_queryset(*args, **kwargs)
+    #    request = self.request
+    #    print('User:', request.user.id)
+    #    print(request.user)
+    #    if not request.user.is_authenticated:
+    #        return Product.objects.none()
+    #    return qs.filter(user=request.user)
 
 ProductListCreate = ProductListCreateApiView.as_view()
 
