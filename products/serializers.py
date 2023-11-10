@@ -17,7 +17,7 @@ class ProductInlineSerializer(serializers.Serializer):
 class ProductSerializer(serializers.ModelSerializer):
     # user = serializers.SerializerMethodField(read_only=True)
     owner = UserPublicSerializer(source='user', read_only=True)
-    related_products = ProductInlineSerializer(source='user.product_set.all', many=True, read_only=True)
+    # related_products = ProductInlineSerializer(source='user.product_set.all', many=True, read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
         view_name='product-detail',
@@ -37,7 +37,6 @@ class ProductSerializer(serializers.ModelSerializer):
             'sale_price',
             'url',
             'edit_url',
-            'related_products'
         ]
 
     #def validate_title(self, value):
