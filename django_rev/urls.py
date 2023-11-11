@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/products/', include('products.urls')),
+    path('api/search/', include('search.urls')),
     path('api/v2/', include('django_rev.routers')),
 ]
