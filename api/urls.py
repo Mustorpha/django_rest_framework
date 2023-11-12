@@ -6,5 +6,5 @@ from . import views
 
 urlpatterns = [
     path('', views.api_home, name = 'api-home'),
-    path('auth/', obtain_auth_token),
+    path('auth/', obtain_auth_token, name='auth-token'),
 ]

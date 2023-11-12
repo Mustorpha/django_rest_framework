@@ -45,10 +45,7 @@ INSTALLED_APPS = [
 
     # Third Party Packages
     'rest_framework',
-    'rest_framework.authtoken',
-
-    # Third Party API Services
-    'algoliasearch_django'
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -148,10 +145,3 @@ REST_FRAMEWORK = {
     "PAGE_SIZE":6
 }
 
-# Algolia Search Settings
-
-ALGOLIA = {
-    'APPLICATION_ID': 'SYD1P9SF4H',
-    'API_KEY': 'YOUR_ALGOLIA_ADMIN_API_KEY',
-    'INDEX_PREFIX': 'drf'
-}

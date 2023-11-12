@@ -38,6 +38,10 @@ class Product(models.Model):
     def sale_price(self):
         return f'{float(self.price) * 0.8:.1f}'
 
+    @property
+    def body(self):
+        return self.content
+
     def is_public(self) -> bool:
         return self.public
 
