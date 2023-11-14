@@ -6,8 +6,6 @@ import random
 
 User = settings.AUTH_USER_MODEL
 
-TAGS_MODEL_VALUES = ['electronics', 'cars', 'movies', 'cameras']
-
 class ProductQuerySet(models.QuerySet):
     def is_public(self):
         return self.filter(public=True)
@@ -38,8 +36,9 @@ class Product(models.Model):
     def sale_price(self):
         return f'{float(self.price) * 0.8:.1f}'
 
+    @property
+    def body(self):
+        return self.content
+
     def is_public(self) -> bool:
         return self.public
-
-    def get_tag_list(self):
-        return [random.choice(TAGS_MODEL_VALUES)]

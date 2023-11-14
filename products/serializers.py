@@ -25,6 +25,7 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only=True
         )
     title = serializers.CharField(validators=[validate_title])
+    body = serializers.CharField(source='content')
 
     class Meta:
         model = Product
@@ -32,9 +33,10 @@ class ProductSerializer(serializers.ModelSerializer):
             'id',
             'owner',
             'title',
-            'content',
+            'body',
             'price',
             'sale_price',
+            'public',
             'url',
             'edit_url',
         ]
